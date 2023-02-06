@@ -63,6 +63,7 @@ app.get('/place',(req,res)=>{
 })
 //http://localhost:8080/special/1
 //req{ params: {no:1}}
+// 나라정보 받아오기
 app.get("/place/:place",(req,res)=>{
     const {place} =req.params;
     conn.query(`select * from City where cityname = "${place}"`,(err,result,field)=>{
@@ -73,6 +74,19 @@ app.get("/place/:place",(req,res)=>{
         }
     })
 })
+
+//나라별 마커 포인트 받아오기
+app.get("/marker/:place",(req,res)=>{
+    const {place} =req.params;
+    conn.query(`select * from SpotPlace where Nation = "${place}"`,(err,result,field)=>{
+        if(err){
+            res.send(err)
+        }else{
+            res.send(result)
+        }
+    })
+})
+
 //회원가입요청
 app.post("/join",async (req,res)=>{
     //입력받은 비밀번호를 mytextpass로 저장
