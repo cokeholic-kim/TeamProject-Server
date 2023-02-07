@@ -139,11 +139,12 @@ app.post("/login",async(req,res)=> {
 })
 
 //비밀번호찾기 
-app.post("/findpass", async (req,res) => {
-    const {m_nickname,m_email} = req.body;
-    conn.query(`select * from member where m_nickname = '${m_nickname}' and m_email = '${m_email}'`,(err,result,field)=>{
+app.post("/findPass", async (req,res) => {
+    const {useremail} = req.body;
+    console.log(req.body)
+    conn.query(`select * from member where m_email = '${useremail}'`,(err,result,field)=>{
         if(result){
-            console.log(`결과${result[0].m_email}`)
+            console.log(`결과${result[0].useremail}`)
             res.send(result[0].m_email)
         }else{
             console.log(err)
