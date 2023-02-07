@@ -63,6 +63,7 @@ app.get('/place',(req,res)=>{
 })
 //http://localhost:8080/special/1
 //req{ params: {no:1}}
+// 나라정보 받아오기
 app.get("/place/:place",(req,res)=>{
     const {place} =req.params;
     conn.query(`select * from City where cityname = "${place}"`,(err,result,field)=>{
@@ -73,6 +74,19 @@ app.get("/place/:place",(req,res)=>{
         }
     })
 })
+
+//나라별 마커 포인트 받아오기
+app.get("/marker/:place",(req,res)=>{
+    const {place} =req.params;
+    conn.query(`select * from SpotPlace where Nation = "${place}"`,(err,result,field)=>{
+        if(err){
+            res.send(err)
+        }else{
+            res.send(result)
+        }
+    })
+})
+
 //회원가입요청
 app.post("/join",async (req,res)=>{
     //입력받은 비밀번호를 mytextpass로 저장
@@ -99,6 +113,31 @@ app.post("/join",async (req,res)=>{
     }
     console.log(req.body)
 })
+//로그인 요청 하기 
+app.post("/login",async(req,res)=> {
+    // 1.) useremail 값에 일치하는 데이터가 있는지 확인한다.
+    // 2.) userpass 암호화해서 쿼리 결과의 패스워드랑 일치하는지 체크
+    //{"useremail":"ㅁㄴㅇ""userpass":"asd"}
+    const {useremail,userpass }=req.body;
+    conn.query(`select * from member where m_email = '${useremail}'`, (err,result,fields)=>{
+        //결과가 undefined 가 아니고 결과의 0번째가 undefined가 아닐때= 결과가 있을때 
+        if(result != undefined && result[0] !=undefined ){
+            bcrypt.compare(userpass,result[0].m_pass, function(err,rese){
+                //result == true
+                if(result){
+                    console.log("로그인 성공");
+                    res.send(result);
+                }else{
+                    console.log("로그인 실패");
+                    res.send(result);
+                }
+            })
+        }else{
+            console.log("데이터가 존재하지 않습니다.");
+        }
+    })
+})
+
 
 app.listen(port,()=>{
     console.log("서버가 구동중입니다.")
