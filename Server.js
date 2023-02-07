@@ -44,7 +44,7 @@ app.post("/upload",upload.single("file"),async (req,res)=>{
 const conn = mysql.createConnection({
     host:"customer-tutorial.cuukeoat8h7o.ap-northeast-1.rds.amazonaws.com",
     user:"admin",
-    password:"",
+    password:"kimdh991",
     port:"3306",
     database:"TeamProject"
 })
@@ -78,7 +78,7 @@ app.post("/join",async (req,res)=>{
     //입력받은 비밀번호를 mytextpass로 저장
     const mytextpass = req.body.m_pass;
     let myPass = ""
-    const {m_name,m_pass,m_phone,m_nickname,m_add1,m_add2,m_email} = req.body;
+    const {m_name,m_nickname,m_email} = req.body;
 
     // 빈문자열이 아니고 undefined가 아닐때
     if(mytextpass != '' && mytextpass != undefined){
@@ -87,8 +87,8 @@ app.post("/join",async (req,res)=>{
             bcrypt.hash(mytextpass, salt, function(err, hash) {// hash는 암호화시켜서 리턴되는값.
                 // Store hash in your password DB.
                 myPass = hash;
-                conn.query(`insert into member(m_name,m_pass,m_phone,m_nickname,m_address1,m_address2,m_email) 
-                values( '${m_name}' , '${myPass}' , '${m_phone}' , '${m_nickname}' , '${m_add1}' , '${m_add2}' , '${m_email}' )`
+                conn.query(`insert into member(m_name,m_pass,m_email,m_nickname) 
+                values( '${m_name}' , '${myPass}' , '${m_email}' , '${m_nickname}')`
                 ,(err,result,fields)=>{
                     console.log(result);
                     res.send("등록되었습니다.")
