@@ -138,6 +138,48 @@ app.post("/login",async(req,res)=> {
     })
 })
 
+//비밀번호찾기 
+app.post("/findpass", async (req,res) => {
+    const {m_nickname,m_email} = req.body;
+    conn.query(`select * from member where m_nickname = '${m_nickname}' and m_email = '${m_email}'`,(err,result,field)=>{
+        if(result){
+            console.log(`결과${result[0].m_email}`)
+            res.send(result[0].m_email)
+        }else{
+            console.log(err)
+        }
+    })
+})
+
+//패스워드 변경 요청
+app.patch("/updatepw",async (req, res)=>{
+    console.log(req.body)
+    const {m_pass,m_email} = req.body;
+    //update 테이블이름 set 필드이름= 데이터값 where 조건
+    //
+    const mytextpass = m_pass;
+    let myPass = ""
+
+    if(mytextpass != '' && mytextpass != undefined){
+        bcrypt.genSalt(saltRounds, function(err, salt) {
+            //hash메소드 호출되면 인자로 넣어준 비밀번호를 암호화 하여 콜백함수 안 hash로 돌려준다
+            bcrypt.hash(mytextpass, salt, function(err, hash) {// hash는 암호화시켜서 리턴되는값.
+                // Store hash in your password DB.
+                myPass = hash;
+                conn.query(`update member set m_pass='${myPass}' where m_email='${m_email}'`
+                ,(err,result,fields)=>{
+                    if(result){
+                        res.send("등록되었습니다.")
+                    }
+                    console.log(err)
+                })
+            
+            });
+        });
+    }
+})
+
+
 
 app.listen(port,()=>{
     console.log("서버가 구동중입니다.")
