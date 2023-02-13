@@ -153,12 +153,11 @@ app.post("/findPass", async (req,res) => {
 })
 
 //패스워드 변경 요청
-app.patch("/updatepw",async (req, res)=>{
+app.patch("/updatePass",async (req, res)=>{
     console.log(req.body)
     const {m_pass,m_email} = req.body;
     //update 테이블이름 set 필드이름= 데이터값 where 조건
-    //
-    const mytextpass = m_pass;
+        const mytextpass = m_pass;
     let myPass = ""
 
     if(mytextpass != '' && mytextpass != undefined){
@@ -179,6 +178,18 @@ app.patch("/updatepw",async (req, res)=>{
         });
     }
 })
+app.get("/citydesc/:place",(req,res)=>{ //axios.get('/citydesc/${places}')
+    const {place} = req.params;
+    conn.query(`select month_1,month_2,month_3,month_4,month_5,month_6,month_7,month_8,month_9,month_10,month_11,month_12 from City where cityname = '${place}'`,
+    (err,result,fields)=>{
+        if(result){
+            res.send(result)
+            console.log(result)
+        }
+        console.log(err)
+    })
+})
+
 
 
 
