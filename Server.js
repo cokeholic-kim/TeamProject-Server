@@ -178,7 +178,7 @@ app.patch("/updatePass",async (req, res)=>{
         });
     }
 })
-<<<<<<< HEAD
+
 //추천 관광지 받아오기
 app.get("/recommend/:place",(req,res)=>{
     const {place} =req.params;
@@ -192,7 +192,7 @@ app.get("/recommend/:place",(req,res)=>{
         }
     })
 })
-=======
+
 app.get("/citydesc/:place",(req,res)=>{ //axios.get('/citydesc/${places}')
     const {place} = req.params;
     conn.query(`select month_1,month_2,month_3,month_4,month_5,month_6,month_7,month_8,month_9,month_10,month_11,month_12 from City where cityname = '${place}'`,
@@ -205,7 +205,7 @@ app.get("/citydesc/:place",(req,res)=>{ //axios.get('/citydesc/${places}')
     })
 })
 
->>>>>>> 49f9a65979faf544b965346eb395dc0e2b137603
+
 
 
 
