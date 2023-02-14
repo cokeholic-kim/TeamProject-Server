@@ -179,6 +179,19 @@ app.patch("/updatepw",async (req, res)=>{
         });
     }
 })
+//추천 관광지 받아오기
+app.get("/recommend/:place",(req,res)=>{
+    const {place} =req.params;
+    conn.query(`select * from SpotPlace where Nation = "${place}" and recommend IS NOT NULL order by recommend`,(err,result,field)=>{
+        if(err){
+            res.send(err)
+            console.log(err)
+        }else{
+            res.send(result)
+            console.log(result)
+        }
+    })
+})
 
 
 
