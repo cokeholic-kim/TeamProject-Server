@@ -44,7 +44,7 @@ app.post("/upload",upload.single("file"),async (req,res)=>{
 const conn = mysql.createConnection({
     host:"customer-tutorial.cuukeoat8h7o.ap-northeast-1.rds.amazonaws.com",
     user:"admin",
-    password:"kimdh991",
+    password:"",
     port:"3306",
     database:"TeamProject"
 })
